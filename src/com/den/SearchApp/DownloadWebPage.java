@@ -6,10 +6,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -18,21 +19,24 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DownloadWebPage extends AsyncTask<String, String, String> {
 
     private TextView dataField;
     private Context context;
     private ProgressDialog mProgress;
+    private ListView list;
 
     final static String apiKey = "AIzaSyAGxxLBeUY2z3wek75rncgChUMbl1VERXw";
     final static String customSearchEngineKey = "009991385833239908374:upp0zxbugva";
     final static String searchURL = "https://www.googleapis.com/customsearch/v1?";
     private static final String TAG = DownloadWebPage.class.getSimpleName();
 
-    public DownloadWebPage(Context context, TextView dataField) {
+    public DownloadWebPage(Context context, TextView dataField, ListView list) {
         this.context = context;
         this.dataField = dataField;
+        this.list = list;
     }
 
 
@@ -85,9 +89,15 @@ public class DownloadWebPage extends AsyncTask<String, String, String> {
         return toSearch;
     }
 
+    private JSONArray items = null;
+    private static final String ITEMS="items";
+    private static final String KIND="kind";
+    private static final String TITLE="title";
+    private ArrayList<HashMap<String, String>> requests = new ArrayList<HashMap<String, String>>();;
+
     @Override
     protected String doInBackground(String... arg0) {
-        String pUrl = makeSearchString(arg0[0], 1, 1);
+        String pUrl = makeSearchString(arg0[0], 1, 10);
         try {
             URL url = new URL(pUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -98,8 +108,23 @@ public class DownloadWebPage extends AsyncTask<String, String, String> {
                 buffer.append(line);
             }
             Log.d(TAG, buffer.toString());
-            ArrayList<Item> it = request(buffer.toString());
-            return buffer.toString();
+            //ArrayList<Item> it = request(buffer.toString());
+            String jsonStr = buffer.toString();
+            //*************************************************
+            JSONObject jsonObj = new JSONObject(jsonStr);
+            items = jsonObj.getJSONArray(ITEMS);
+            for (int i = 0; i <items.length() ; i++) {
+                JSONObject c = items.getJSONObject(i);
+                String kind = c.getString(KIND);
+                String title = c.getString(TITLE);
+                HashMap<String, String> oneRequest = new HashMap<String, String>();
+                oneRequest.put(KIND,kind);
+                oneRequest.put(TITLE, title);
+
+                requests.add(oneRequest);
+            }
+            //*************************************************
+            return jsonStr;
         } catch (Exception e) {
             Log.d(TAG, "exception", e);
         }
@@ -108,7 +133,13 @@ public class DownloadWebPage extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        this.dataField.setText(result);
+        //this.dataField.setText(result);
+        ListAdapter adapter = new SimpleAdapter(
+                context, requests,
+                R.layout.list_item, new String[] { KIND, TITLE}, new int[] { R.id.item_kind,
+                R.id.item_type});
+
+        list.setAdapter(adapter);
         mProgress.dismiss();
     }
 
@@ -128,11 +159,11 @@ public class DownloadWebPage extends AsyncTask<String, String, String> {
         //Get the root object for the response
         Example ex = gson.fromJson(in, Example.class);
         String kind = ex.getKind();
-        String type = Example.Url.getType();
-        String template = Example.Url.getTemplate();
-        Log.d(TAG, "linka" + kind);
-        Log.d(TAG, "type" + type);
-        Log.d(TAG, "template" + template);
+        //String type = Example.Url.getType();
+        //String template = Example.Url.getTemplate();
+        Log.d(TAG, "kind: " + kind);
+        //Log.d(TAG, "type" + type);
+        //Log.d(TAG, "template" + template);
         return list;
     }
 }
