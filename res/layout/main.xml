@@ -2,47 +2,36 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".MainActivity">
+                tools:context=".MainActivity"
+        >
 
     <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/search_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="58dp"
-            android:ems="10"/>
-
-    <Button
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/editText1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="69dp"
-            android:onClick="download"
+            android:layout_marginTop="@dimen/widget_margin_top"
+            android:ems="10"
             />
 
-
-    <!--<ScrollView
+    <Button
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/search_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/widget_margin_top"
+            android:text="@string/search"
+            android:onClick="download"
+            />
+    <FrameLayout
+            android:id="@+id/container_request"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/button1"
-            android:layout_marginTop="20dp"
+            android:layout_below="@+id/search_button"
+            android:layout_marginTop="@dimen/list_margin_top"
             >
-        <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/button1"
-                android:textAppearance="?android:attr/textAppearanceSmall"/>
-    </ScrollView>-->
-    <ListView
-            android:id="@+id/request_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/button1"
-            android:layout_marginTop="20dp"/>
-
+    </FrameLayout>
 
 </RelativeLayout>
 

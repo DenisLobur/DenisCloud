@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="no_data_txt_size">50dp</dimen>
+    <dimen name="widget_margin_top">60dp</dimen>
+    <dimen name="list_margin_top">20dp</dimen>
+    <dimen name="list_item_padding">10dp</dimen>
+    <dimen name="list_item_txt_padding_bottom">2dp</dimen>
+    <dimen name="list_item_name_txt_size">20dp</dimen>
+    <dimen name="list_item_name_padding_top">6dp</dimen>
+</resources>

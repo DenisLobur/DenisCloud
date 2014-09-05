@@ -3,24 +3,46 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:padding="10dp"
-              android:paddingLeft="10dp"
-              android:paddingRight="10dp">
+              android:padding="@dimen/list_item_padding"
+              android:paddingLeft="@dimen/list_item_padding"
+              android:paddingRight="@dimen/list_item_padding">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
 
-    <TextView
-            android:id="@+id/item_kind"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:paddingTop="6dip"
-            android:textColor="#43bd00"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+        <TextView
+                android:id="@+id/item_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:paddingBottom="@dimen/list_item_txt_padding_bottom"
+                android:textColor="@color/name_color"
+                android:textSize="@dimen/list_item_name_txt_size"
+                android:textStyle="bold"/>
 
-    <TextView
-            android:id="@+id/item_type"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="2dip"
-            android:textColor="#acacac"/>
+        <TextView
+                android:id="@+id/item_url"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingBottom="@dimen/list_item_txt_padding_bottom"
+                android:textColor="@color/url_color"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+        <TextView
+                android:id="@+id/item_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/description_color"/>
+    </LinearLayout>
+
 </LinearLayout>

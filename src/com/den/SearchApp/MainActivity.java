@@ -1,30 +1,45 @@
 package com.den.SearchApp;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
 
-public class MainActivity extends Activity {
+/**
+ * UI Activity to interact with a user
+ *
+ * Created by Denis Lobur
+ */
+public class MainActivity extends FragmentActivity implements RequestHolderFragment.IEmptyListReturned {
 
     private EditText urlField;
-    private TextView data;
-    private ListView requestList;
+    private RequestHolderFragment requestList;
+    private NoDataFragment noDataFragment;
+    private FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        urlField = (EditText) findViewById(R.id.editText1);
-        requestList = (ListView)findViewById(R.id.request_list);
-        //data = (TextView) findViewById(R.id.textView2);
+
+        urlField = (EditText) findViewById(R.id.search_label);
+        requestList = new RequestHolderFragment(this);
+        noDataFragment = new NoDataFragment();
+        fm.beginTransaction().add(R.id.container_request, noDataFragment).commit();
     }
 
     public void download(View view) {
-
         String url = urlField.getText().toString();
-        new DownloadWebPage(this, data, requestList).execute(url);
+        requestList.setUrl(url);
+        requestList.startRequest();
+        fm.beginTransaction().replace(R.id.container_request, requestList).commit();
+    }
+
+    //If no data found this call back will be fired, and list set to "No Data" option
+
+    @Override
+    public void emptyListReturned() {
+        fm.beginTransaction().add(R.id.container_request, noDataFragment).commit();
     }
 }
